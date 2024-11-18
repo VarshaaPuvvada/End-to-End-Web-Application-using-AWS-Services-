@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <!-- Styling for a formal calculator color scheme -->
+    <style>
+    body {
+        background-color: #333333; /* Dark background */
+        font-family: Arial, sans-serif;
+    }
+    h1 {
+        color: #FFFFFF; /* White for the title */
+        text-align: center;
+        margin-top: 20px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+    label {
+        color: #CCCCCC; /* Light gray for labels */
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    input, select {
+        background-color: #555555; /* Dark gray for inputs */
+        color: #FFFFFF; /* White text for inputs */
+        border: none;
+        border-radius: 5px;
+        padding: 8px;
+        margin-bottom: 15px;
+        width: 200px;
+        text-align: center;
+    }
+    button {
+        background-color: #1E90FF; /* Blue button for contrast */
+        color: #FFFFFF;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    button:hover {
+        background-color: #4682B4; /* Slightly lighter blue on hover */
+    }
+    </style>
+    <script>
+        // callAPI function that takes the base, exponent, and operation as parameters
+        var callAPI = (num1, num2, operation) => {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var raw = JSON.stringify({"num1": num1, "num2": num2, "operation": operation});
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            fetch("https://561wrq1n7d.execute-api.ap-southeast-2.amazonaws.com/dev", requestOptions)
+            .then(response => response.text())
+            .then(result => alert(JSON.parse(result).body))
+            .catch(error => console.log('error', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Calculator</h1>
+    <form>
+        <label>First number:</label>
+        <input type="text" id="num1">
+        <label>Second number:</label>
+        <input type="text" id="num2">
+        <label>Operation:</label>
+        <select id="operation">
+            <option value="add">Add</option>
+            <option value="subtract">Subtract</option>
+            <option value="multiply">Multiply</option>
+            <option value="divide">Divide</option>
+            <option value="power">Power</option>
+        </select>
+        <button type="button" onclick="callAPI(document.getElementById('num1').value, document.getElementById('num2').value, document.getElementById('operation').value)">CALCULATE</button>
+    </form>
+</body>
+</html>
